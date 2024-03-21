@@ -27,6 +27,8 @@ jobs:
         env:
           # GH_TOKEN 设置到脚本执行的环境变量中，使Nyx可以获取到GH_TOKEN
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
         run: |
           git remote -v
           ./gradlew nyxPublish --stacktrace
