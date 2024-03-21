@@ -50,6 +50,18 @@ fun configreVersion(project: Project) {
     }
 }
 
+allprojects{
+    val isCI = System.getenv("CI")
+    if("true".equals(isCI)){
+        allprojects {
+            //配置全局依赖仓库
+            repositories {
+                mavenCentral()
+            }
+        }
+    }
+}
+
 subprojects {
     group = rootProject.group
     version = rootProject.version
@@ -60,9 +72,6 @@ subprojects {
         }
     }
 
-    val isCI = System.getenv("CI")
-
-    println("这个环境是CI:${isCI}")
 
     if (checkIsLibraryModule(this)) {
         println("----->${this.name}")
