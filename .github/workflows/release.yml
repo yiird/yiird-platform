@@ -20,11 +20,15 @@ jobs:
           github-token: ${{ secrets.GH_TOKEN }}
       - name: 创建 init.gradle.kts
         run: |
-          cat > ~/init.gradle.kts <<EOF
+          cat > ~/.gradle/init.gradle.kts <<EOF
           beforeSettings{
             //配置全局插件仓库
             pluginManagement {
               repositories {
+                mavenLocal()
+                maven(url = uri("https://maven.aliyun.com/repository/central"))
+                maven(url = uri("https://maven.aliyun.com/repository/public"))
+                maven(url = uri("https://maven.aliyun.com/repository/gradle-plugin"))
                 mavenCentral()
               }
             }
@@ -32,6 +36,9 @@ jobs:
           allprojects {
             //配置全局依赖仓库
             repositories {
+              mavenLocal()
+              maven(url = uri("https://maven.aliyun.com/repository/central"))
+              maven(url = uri("https://maven.aliyun.com/repository/public"))
               mavenCentral()
             }
           }
