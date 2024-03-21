@@ -1,4 +1,5 @@
 import io.spring.gradle.dependencymanagement.internal.dsl.StandardDependencyManagementExtension
+import org.gradle.internal.impldep.com.google.common.primitives.Booleans
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
@@ -48,6 +49,10 @@ fun configreVersion(project: Project) {
         targetCompatibility = JavaVersion.VERSION_17
     }
 }
+
+val isCI = System.getenv("CI")
+
+print("这个环境是CI:${isCI}")
 
 subprojects {
     group = rootProject.group
