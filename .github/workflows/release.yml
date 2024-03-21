@@ -32,3 +32,4 @@ jobs:
         run: |
           git remote -v
           ./gradlew nyxPublish --stacktrace
+          ./gradlew publish
