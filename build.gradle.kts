@@ -49,6 +49,12 @@ fun configreVersion(project: Project) {
     }
 }
 
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
 subprojects {
     group = rootProject.group
     version = rootProject.version
