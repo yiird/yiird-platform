@@ -41,11 +41,13 @@ fun publishConfigure(project: Project, type: String = "java") {
 
             if (!"true".equals(isCI)) {
                 mavenLocal()
-            }else{
+            } else {
                 val isAlpha = project.version.toString().endsWith("-alpha");
                 maven {
                     name = "Nexus"
                     url = uri(if (isAlpha) "http://47.104.74.142:8081/repository/yiird-snapshot/" else "http://47.104.74.142:8081/repository/yiird-release/")
+                    isAllowInsecureProtocol = true;
+
                     credentials {
                         username = System.getenv("MAVEN_USERNAME")
                         password = System.getenv("MAVEN_PASSWORD")
