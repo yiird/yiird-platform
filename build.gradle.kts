@@ -50,10 +50,6 @@ fun configreVersion(project: Project) {
     }
 }
 
-val isCI = System.getenv("CI")
-
-println("这个环境是CI:${isCI}")
-
 subprojects {
     group = rootProject.group
     version = rootProject.version
@@ -63,6 +59,10 @@ subprojects {
             exclude("com.zaxxer", "HikariCP")
         }
     }
+
+    val isCI = System.getenv("CI")
+
+    println("这个环境是CI:${isCI}")
 
     if (checkIsLibraryModule(this)) {
         println("----->${this.name}")
