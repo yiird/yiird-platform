@@ -20,6 +20,7 @@ jobs:
           github-token: ${{ secrets.GH_TOKEN }}
       - name: 创建 init.gradle.kts
         run: |
+          mkdir ~/.gradle
           cat > ~/.gradle/init.gradle.kts <<EOF
           beforeSettings{
             //配置全局插件仓库
