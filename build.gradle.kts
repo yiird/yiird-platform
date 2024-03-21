@@ -52,7 +52,7 @@ fun configreVersion(project: Project) {
 
 val isCI = System.getenv("CI")
 
-print("这个环境是CI:${isCI}")
+println("这个环境是CI:${isCI}")
 
 subprojects {
     group = rootProject.group
