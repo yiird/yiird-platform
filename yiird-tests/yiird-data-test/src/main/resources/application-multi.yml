@@ -1,0 +1,21 @@
+spring:
+  jpa:
+    packages:
+      - data-source-key: ds1
+        module-packages: com.yiird.data.test.*.user
+      - data-source-key: ds2
+        module-packages: com.yiird.data.test.*.order
+  datasource:
+    sources:
+      ds1:
+        url: jdbc:mysql://47.104.74.142:3306/tx_test_1?serverTimezone=Asia/Shanghai
+        username: root
+        password: Lrx+@9.6
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        primary: true
+      ds2:
+        url: jdbc:mysql://47.104.74.142:3306/tx_test_2?serverTimezone=Asia/Shanghai
+        username: root
+        password: Lrx+@9.6
+        driver-class-name: com.mysql.cj.jdbc.Driver
+

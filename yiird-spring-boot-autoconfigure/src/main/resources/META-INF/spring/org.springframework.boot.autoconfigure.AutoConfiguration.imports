@@ -1,0 +1,3 @@
+com.yiird.spring.boot.autoconfigure.data.datasource.DataSourceAutoConfiguration
+com.yiird.spring.boot.autoconfigure.data.jpa.HibernateJpaAutoConfiguration
+com.yiird.spring.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration

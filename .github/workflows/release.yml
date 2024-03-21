@@ -1,0 +1,27 @@
+name: 发布
+on:
+  push:
+    branches:
+      - main
+      - dev
+jobs:
+  build-project:
+    name: 构建项目
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: 构建打包
+        run: ./gradlew clean build
+      - name: 配置远程仓库
+        run: |
+          git remote set-url origin https://${{github.actor}}:${{secrets.GH_TOKEN}}@github.com/${{github.repository}}.git
+      - name: 发行版本
+        env:
+          # GH_TOKEN 设置到脚本执行的环境变量中，使Nyx可以获取到GH_TOKEN
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git remote -v
+          ./gradlew nyxPublish --stacktrace

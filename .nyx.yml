@@ -1,0 +1,139 @@
+---
+preset: "extended"
+resume: true
+scheme: SEMVER
+dryRun: false
+initialVersion: "0.1.0"
+releaseLenient: true
+releasePrefix: v
+summary: true
+summaryFile: "build/.nyx-summary.txt"
+stateFile: "build/.nyx-state.yml"
+changelog:
+  append: "head"
+  path: "build/CHANGELOG.md"
+  sections:
+    "Added": "^feat$"
+    "Fixed": "^fix$"
+  substitutions:
+    "(?m)#([0-9]+)(?s)": "[#%s](https://github.com/yiird/yiird-platform/issues/%s)"
+commitMessageConventions:
+  enabled:
+    - conventionalCommits
+    - conventionalCommitsForMerge
+  items:
+    conventionalCommits:
+      expression: "(?m)^(?<type>[a-zA-Z0-9_]+)(\\((?<scope>[\u4e00-\u9fa5a-zA-Z ]+)\\))?(!)?:( (?<title>.+))$(?s).*"
+      bumpExpressions:
+        major: "(?s)(?m)^[a-zA-Z0-9_]+(\\([\u4e00-\u9fa5a-zA-Z ]+\\))?(!: .*|.*^(BREAKING( |-)CHANGE: )).*"
+        minor: "(?s)(?m)^feat(!{0})(\\([\u4e00-\u9fa5a-zA-Z ]+\\))?: (?!.*^(BREAKING( |-)CHANGE: )).*"
+        patch: "(?s)(?m)^fix(!{0})(\\([\u4e00-\u9fa5a-zA-Z ]+\\))?: (?!.*^(BREAKING( |-)CHANGE: )).*"
+    conventionalCommitsForMerge:
+      expression: "(?m)(?<type>[a-zA-Z0-9_]+)(\\((?<scope>[\u4e00-\u9fa5a-zA-Z ]+)\\))?(!)?:( (?<title>.+))$(?s).*"
+      bumpExpressions:
+        major: "(?s)(?m)[a-zA-Z0-9_]+(\\([\u4e00-\u9fa5a-zA-Z ]+\\))?(!: .*|.*^(BREAKING( |-)CHANGE: )).*"
+        minor: "(?s)(?m)feat(!{0})(\\([\u4e00-\u9fa5a-zA-Z ]+\\))?: (?!.*^(BREAKING( |-)CHANGE: )).*"
+        patch: "(?s)(?m)fix(!{0})(\\([\u4e00-\u9fa5a-zA-Z ]+\\))?: (?!.*^(BREAKING( |-)CHANGE: )).*"
+
+# 将在Github上申请的Access Token配置到环境变量中命名为GH_TOKEN
+git:
+  remotes:
+    origin:
+      authenticationMethod: USER_PASSWORD
+      user: "{{#environmentVariable}}GH_TOKEN{{/environmentVariable}}"
+      password: ""
+services:
+  github:
+    type: "GITHUB"
+    options:
+      AUTHENTICATION_TOKEN: "{{#environmentVariable}}GH_TOKEN{{/environmentVariable}}"
+      REPOSITORY_NAME: "yiird-platform"
+      REPOSITORY_OWNER: "yiird"
+releaseTypes:
+  enabled:
+    - mainline #主线发布策略，用于发布稳定版本，创建tag和release
+    - integration #集成发布策略，用于预发布版本，创建tag
+    - feature #功能版本，不创建tag，不创建release，这个策略可以不要
+    - hotfix #修复版本，创建tag和release
+    - internal #内部版本（必须得有）
+  publicationServices:
+    - github
+  remoteRepositories:
+    - origin
+  items:
+    mainline:
+      collapseVersions: false
+      filterTags: "^({{configuration.releasePrefix}})?([0-9]\\d*)\\.([0-9]\\d*)\\.([0-9]\\d*)$"
+      description: "{{#fileContent}}build/CHANGELOG.md{{/fileContent}}"
+      gitCommit: "false"
+      gitPush: "true"
+      gitPushForce: "true"
+      gitTag: "true"
+      gitTagForce: "true"
+      gitTagMessage: "Tag version {{version}}"
+      matchBranches: ^(master|main)$
+      matchWorkspaceStatus: "CLEAN"
+      publish: "true"
+      releaseName: "{{version}}"
+      versionRangeFromBranchName: false
+    integration:
+      collapseVersions: true
+      collapsedVersionQualifier: "alpha"
+      description: "{{#fileContent}}build/CHANGELOG.md{{/fileContent}}"
+      filterTags: "^({{configuration.releasePrefix}})?([0-9]\\d*)\\.([0-9]\\d*)\\.([0-9]\\d*)(-(alpha|develop|development|integration|latest)(\\.([0-9]\\d*))?)$"
+      gitCommit: "false"
+      gitPush: "true"
+      gitTag: "true"
+      gitTagMessage: "Tag version {{version}}"
+      matchBranches: "^(dev|develop|development|integration|latest)$"
+      matchWorkspaceStatus: "CLEAN"
+      publish: "true"
+      publishPreRelease: "true"
+      releaseName: "{{version}}"
+      versionRangeFromBranchName: false
+    feature:
+      collapseVersions: true
+      collapsedVersionQualifier: "feature"
+      description: "{{#fileContent}}build/CHANGELOG.md{{/fileContent}}"
+      filterTags: "^({{configuration.releasePrefix}})?([0-9]\\d*)\\.([0-9]\\d*)\\.([0-9]\\d*)(-(feat|feature)(([0-9a-zA-Z]*)(\\.([0-9]\\d*))?)?)$"
+      gitCommit: "false"
+      gitPush: "false"
+      gitTag: "false"
+      matchBranches: "^(feat|feature)((-|\\/)[0-9a-zA-Z-_]+)?$"
+      publish: "false"
+      versionRangeFromBranchName: false
+    hotfix:
+      collapseVersions: true
+      collapsedVersionQualifier: "hotfix"
+      description: "{{#fileContent}}build/CHANGELOG.md{{/fileContent}}"
+      filterTags: "^({{configuration.releasePrefix}})?([0-9]\\d*)\\.([0-9]\\d*)\\.([0-9]\\d*)(-(fix|hotfix)(([0-9a-zA-Z]*)(\\.([0-9]\\d*))?)?)$"
+      gitCommit: "false"
+      gitPush: "true"
+      gitTag: "true"
+      matchBranches: "^(fix|hotfix)((-|\\/)[0-9a-zA-Z-_]+)?$"
+      matchWorkspaceStatus: "CLEAN"
+      publish: "true"
+      publishPreRelease: "true"
+      versionRangeFromBranchName: false
+    internal:
+      collapseVersions: true
+      collapsedVersionQualifier: "internal"
+      description: "Internal release "
+      gitCommit: "false"
+      gitPush: "false"
+      gitTag: "false"
+      identifiers:
+        -
+          position: BUILD
+          qualifier: "{{environmentUser}}"
+          value: ""
+        -
+          position: BUILD
+          qualifier: "{{branch}}"
+          value: ""
+        -
+          position: BUILD
+          qualifier: '{{#timeFormat format="yyyy-MM-dd"}}{{/timeFormat}}'
+          value: ""
+      publish: "false"
+      versionRangeFromBranchName: false

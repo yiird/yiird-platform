@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="/opt/homebrew/Cellar/gradle/8.5/libexec" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/yiird-dependencies" />
+            <option value="$PROJECT_DIR$/yiird-spring-boot-autoconfigure" />
+            <option value="$PROJECT_DIR$/yiird-spring-boot-starters" />
+            <option value="$PROJECT_DIR$/yiird-spring-boot-starters/yiird-data-spring-boot-starter" />
+            <option value="$PROJECT_DIR$/yiird-spring-boot-starters/yiird-security-spring-boot-starter" />
+            <option value="$PROJECT_DIR$/yiird-tests" />
+            <option value="$PROJECT_DIR$/yiird-tests/yiird-data-test" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
