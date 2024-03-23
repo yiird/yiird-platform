@@ -18,7 +18,6 @@ public class OrderService {
         order.setNo(1);
         order.setPrice(2);
         orderRepo.save(order);
-        int x = 1 / 0;
     }
 
     @Autowired

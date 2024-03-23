@@ -36,6 +36,12 @@ public class DruidDataSourceWrapper extends DruidXADataSource implements Initial
         this.setMaxActive(properties.getMaxActive());
         this.setMinIdle(properties.getMinIdle());
         this.setMaxWait(properties.getMaxWait());
+
+        if (-1L != properties.getMaxWait()) {
+            //获取连接时最大等待时间，单位毫秒。配置了maxWait之后，缺省启用公平锁，并发效率会有所下降，如果需要可以通过配置useUnfairLock属性为true使用非公平锁
+            super.setUseUnfairLock(true);
+        }
+
         this.setPoolPreparedStatements(properties.getPoolPreparedStatements());
         this.setMaxPoolPreparedStatementPerConnectionSize(
             properties.getMaxPoolPreparedStatementPerConnectionSize());

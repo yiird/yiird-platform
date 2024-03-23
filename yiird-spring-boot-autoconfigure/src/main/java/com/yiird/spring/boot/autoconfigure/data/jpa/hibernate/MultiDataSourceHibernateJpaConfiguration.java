@@ -78,6 +78,7 @@ public class MultiDataSourceHibernateJpaConfiguration implements ImportBeanDefin
         this.packageProperties = binder.bind("spring.jpa", JpaPackageProperties.class).orElseGet(JpaPackageProperties::new);
         this.hibernateProperties = binder.bind("spring.jpa.hibernate", HibernateProperties.class).orElseGet(HibernateProperties::new);
         this.dataSourceProperties = binder.bind("spring.datasource", DataSourceProperties.class).orElseGet(DataSourceProperties::new);
+
         this.jtaTransactionManager = this.factory.getBeanProvider(JtaTransactionManager.class).getIfAvailable();
 
         ObjectProvider<SchemaManagementProvider> providers = this.factory.getBeanProvider(SchemaManagementProvider.class);
@@ -103,9 +104,22 @@ public class MultiDataSourceHibernateJpaConfiguration implements ImportBeanDefin
         dataSourceProperties.getSources().forEach((key, source) -> {
             if (isJta()) {
                 DruidXADataSource xaDataSource = this.factory.getBean(key, DruidXADataSource.class);
-                AtomikosDataSourceBean dataSource = new AtomikosDataSourceBean();
+                AtomikosDataSourceBean dataSource = binder.bind("spring.jta.atomikos.datasource", AtomikosDataSourceBean.class).orElseGet(AtomikosDataSourceBean::new);
                 dataSource.setXaDataSource(xaDataSource);
                 dataSource.setUniqueResourceName(key);
+                //使用druid连接池配置覆盖Atomikos的连接池配置
+                dataSource.setMaxPoolSize(xaDataSource.getMaxActive());
+                dataSource.setMinPoolSize(xaDataSource.getMinIdle());
+                dataSource.setMaintenanceInterval(Long.valueOf(xaDataSource.getTimeBetweenEvictionRunsMillis() / 1000).intValue());
+                dataSource.setMaxIdleTime(Long.valueOf(xaDataSource.getMinEvictableIdleTimeMillis() / 1000).intValue());
+                dataSource.setMaxLifetime(Long.valueOf(xaDataSource.getMaxEvictableIdleTimeMillis() / 1000).intValue());
+                if (-1L != xaDataSource.getMaxWait()) {
+                    if (xaDataSource.getMaxWait() < 100) {
+                        log.warn("Druid连接池，获取连接最大等待时间小于100ms，选择使用Atomikos默认配置(borrowConnectionTimeout = 30s)");
+                    } else {
+                        dataSource.setBorrowConnectionTimeout(Long.valueOf(xaDataSource.getMaxWait() / 1000).intValue());
+                    }
+                }
                 sources.put(key, dataSource);
             } else {
                 DruidDataSource dataSource = this.factory.getBean(key, DruidDataSource.class);
