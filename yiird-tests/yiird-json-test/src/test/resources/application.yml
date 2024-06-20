@@ -1,0 +1,28 @@
+spring:
+  jackson:
+    date-format: yyyy/MM/dd HH:mm:ss
+    property-naming-strategy: SNAKE_CASE
+    serialization:
+      use-equality-for-object-id: true # 启用或禁用在序列化过程中使用对象的相等性来标识对象
+      eager-serializer-fetch: true # 启用或禁用在序列化时提前获取序列化器
+      write-durations-as-timestamps: false # 启用或禁用将持续时间序列化为时间戳格式
+      write-dates-with-context-time-zone: true # 启用或禁用在序列化日期时使用上下文中的时区信息
+      write-self-references-as-null: false # 启用或禁用将对象自引用序列化为 null 值
+      fail-on-unwrapped-type-identifiers: true # 启用或禁用在序列化时检测到未包装的类型标识符时抛出异常
+      wrap-exceptions: true # 启用或禁用在序列化异常时包装异常对象
+      wrap-root-value: false # 启用或禁用在序列化时包裹根值
+      indent-output: true # 启用或禁用对输出的 JSON 进行缩进
+      fail-on-empty-beans: true # 启用或禁用在遇到空对象时抛出异常
+      close-closeable: false # 启用或禁用关闭可关闭的对象
+      flush-after-write-value: true # 启用或禁用在写入 JSON 值后刷新输出流
+      write-dates-as-timestamps: false # 启用或禁用将日期序列化为时间戳格式
+      write-date-timestamps-as-nanoseconds: true # 启用或禁用以纳秒精度写出日期时间戳
+      write-date-keys-as-timestamps: false # 启用或禁用将日期作为键时序列化为时间戳格式
+      write-dates-with-zone-id: true # 启用或禁用在序列化日期时包含时区信息
+      write-single-elem-arrays-unwrapped: false # 启用或禁用在序列化时将只包含一个元素的数组展开为单独的值
+      write-enums-using-index: true # 启用或禁用使用枚举类型的索引值来序列化枚举值
+      write-enum-keys-using-index: false # 启用或禁用在序列化枚举键时使用枚举类型的索引值
+      write-char-arrays-as-json-arrays: false # 启用或禁用将字符数组序列化为 JSON 数组
+      order-map-entries-by-keys: false # 启用或禁用按键的自然顺序对 Map 的条目进行排序
+
+

@@ -10,6 +10,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.StringUtils;
 
+/**
+ * 单数据源判断条件
+ */
 public class SingleDataSourceConditional extends SpringBootCondition {
 
 

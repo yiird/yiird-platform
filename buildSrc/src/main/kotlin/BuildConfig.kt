@@ -81,7 +81,8 @@ fun Project.configTest() = run {
     if (isLibraryModule() || isApplicationModule()) {
         dependencies {
             add("testImplementation", "org.springframework.boot:spring-boot-starter-test:${Versions.SPRING_BOOT}")
-            add("testImplementation", "org.junit.jupiter:junit-jupiter-engine:${Versions.JUNIT}")
+            add("testImplementation", "org.junit.jupiter:junit-jupiter:${Versions.JUNIT}")
+            add("testRuntimeOnly", "org.junit.jupiter:junit-jupiter-engine:${Versions.JUNIT}")
         }
         tasks.withType<Test> {
             useJUnitPlatform()

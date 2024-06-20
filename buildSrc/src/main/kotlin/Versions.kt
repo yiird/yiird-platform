@@ -10,4 +10,7 @@ object Versions {
     var DRUID = "1.2.22"
     var MYSQL = "8.3.0"
     var ATOMIKOS = "6.0.0"
+    var APACHE_COMMONS_NET = "3.10.0"
+    var APACHE_COMMONS_POOL = "2.12.0"
+    var APACHE_TIKA = "2.9.2"
 }
