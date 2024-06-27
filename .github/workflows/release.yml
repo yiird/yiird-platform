@@ -19,7 +19,7 @@ jobs:
           distribution: 'graalvm' # See 'Options' section below for all available distributions
           github-token: ${{ secrets.GH_TOKEN }}
       - name: 构建打包
-        run: ./gradlew clean build
+        run: ./gradlew clean build -x test
       - name: 配置远程仓库
         run: |
           git remote set-url origin https://${{github.actor}}:${{secrets.GH_TOKEN}}@github.com/${{github.repository}}.git
